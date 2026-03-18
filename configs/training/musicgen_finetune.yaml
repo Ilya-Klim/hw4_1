@@ -1,0 +1,25 @@
+# @package _global_
+experiment: musicgen_finetune_hw4
+
+dataset:
+  manifest: ./data/manifests/train.jsonl.gz
+  valid_manifest: ./data/manifests/valid.jsonl.gz
+  sample_rate: 32000
+  channels: 1
+
+model:
+  name: musicgen_small
+  conditioners:
+    text:
+      merge_text_p: 0.25
+      drop_desc_p: 0.25
+
+training:
+  batch_size: 4      
+  max_steps: 10000    
+  learning_rate: 1e-5
+  save_every: 1000
+  use_wandb: true
+
+checkpoint:
+  continue_from: facebook/musicgen-small
