@@ -7,7 +7,6 @@ MAX_SAMPLES = 1500
 
 
 def download_audio(youtube_id, output_path, duration=10):
-    """Скачивает аудио напрямую через yt-dlp и обрезает ffmpeg"""
     cmd = [
         'yt-dlp',
         '-x', '--audio-format', 'wav',

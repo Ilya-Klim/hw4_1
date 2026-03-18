@@ -3,11 +3,10 @@ from audiocraft.models import MusicGen
 from audiocraft.data.audio import audio_write
 import json
 
-MODEL_PATH = "path/to/your/checkpoint" # Или hf repo id если залили
-model = MusicGen.get_pretrained('facebook/musicgen-small') # Замените на загрузку своих весов
-model.set_generation_params(duration=15) # 10-15 секунд
+MODEL_PATH = "./checkpoint" 
+model = MusicGen.get_pretrained('facebook/musicgen-small') 
+model.set_generation_params(duration=15)
 
-# Ваши промпты из задания
 PROMPTS = [
     {
   "description": "An epic and triumphant orchestral soundtrack featuring powerful brass and a sweeping string ensemble, driven by a fast march-like rhythm and an epic background choir, recorded with massive stadium reverb.",
@@ -62,7 +61,6 @@ PROMPTS = [
 ]
 
 def format_prompt(json_prompt):
-    # Та же функция, что использовалась при обучении!
     parts = []
     parts.append(f"Description: {json_prompt.get('description', '')}")
     parts.append(f"Mood: {json_prompt.get('general_mood', '')}")
@@ -79,15 +77,11 @@ def main():
         text_prompt = format_prompt(prompt_json)
         print(f"Generating prompt {idx+1}: {text_prompt[:50]}...")
         
-        # Генерация
-        tokens = model.generate_unconditional(1) # Если нужно без текста
-        # Но нам нужно с текстом:
+        tokens = model.generate_unconditional(1)
         tokens = model.generate(text=[text_prompt], progress=True)
-        
-        # Сохранение
+
         for i, gen in enumerate(tokens):
             output_path = f"results/prompt_{idx+1}"
-            # audio_write ожидает (path, wav, sample_rate, strategy)
             audio_write(output_path, gen.cpu(), model.sample_rate, strategy="loudness")
             print(f"Saved {output_path}.wav")
 

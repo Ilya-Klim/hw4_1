@@ -5,8 +5,6 @@ import random
 from pathlib import Path
 
 def create_manifests(metadata_path: str, output_dir: str, train_ratio: float = 0.9):
-    """Создаёт train/valid манифесты в формате .jsonl.gz"""
-    
     with open(metadata_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
     
@@ -17,7 +15,6 @@ def create_manifests(metadata_path: str, output_dir: str, train_ratio: float = 0
     train_data, valid_data = data[:split_idx], data[split_idx:]
     
     def format_prompt(item: dict) -> str:
-        """Форматирует промпт из структурированных полей"""
         parts = []
         if item.get('description'):
             parts.append(f"Description: {item['description']}")
